@@ -22,7 +22,7 @@ func main() {
 }
 
 func serveIndexTemplate(w http.ResponseWriter, r *http.Request) {
-	title := "Test Green RPM - v" + major + "." + minor
+	title := "Test Greenweb RPM - v" + major + "." + minor
 	log.Println(r.Method, "/")
 	// Testing
 	// lp := filepath.Join("templates", "index.html")

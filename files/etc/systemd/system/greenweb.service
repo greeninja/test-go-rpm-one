@@ -1,6 +1,5 @@
-# Runtime configuration can be managed in /etc/sysconfig/greenweb
 [Unit]
-Description=Green Webserver
+Description=Greenweb Webserver
 Wants=basic.target
 After=basic.target network.target
 
