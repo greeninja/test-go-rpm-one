@@ -1,0 +1,15 @@
+FROM centos:8
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
+RUN sed -i 's/^#baseurl=http\:\/\/mirror\.centos/baseurl=http\:\/\/vault.centos/g' /etc/yum.repos.d/*.repo
+RUN dnf install golang git ruby-devel gcc make rpm-build rubygems -y
+RUN gem install fpm
+RUN mkdir /build
+ADD . /build
+WORKDIR /build/src/
+RUN go get github.com/op/go-logging
+COPY ./files /rpm-env
+ARG MAJOR
+ARG MINOR
+RUN mkdir -p /rpm-env/usr/local/bin
+RUN go build -ldflags "-X main.major=$MAJOR -X main.minor=$MINOR" -o /rpm-env/usr/local/bin/greenweb web.go
+RUN fpm -s dir -t rpm -n greenweb -v $MAJOR --iteration $MINOR -p /build/ --description "Dummy Green Webserver" --url="https://devurandom.io" /rpm-env/=/
